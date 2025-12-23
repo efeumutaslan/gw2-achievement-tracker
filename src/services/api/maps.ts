@@ -26,15 +26,37 @@ export class MapService {
       }
     }
 
-    // Fetch from API
-    const mapsData = await gw2Api.get<MapResponse[]>('/maps', {
-      params: { ids: 'all' },
+    // Step 1: Fetch all map IDs
+    const mapIds = await gw2Api.get<number[]>('/maps', {
       cache: {
-        key: 'maps:all',
+        key: 'maps:ids',
         ttl: CACHE_TTL.MAPS,
       },
       deduplicate: true,
     })
+
+    // Step 2: Fetch maps in chunks (GW2 API limit is 200 IDs per request)
+    const chunkSize = 200
+    const chunks: number[][] = []
+    for (let i = 0; i < mapIds.length; i += chunkSize) {
+      chunks.push(mapIds.slice(i, i + chunkSize))
+    }
+
+    // Step 3: Fetch all chunks in parallel
+    const mapChunks = await Promise.all(
+      chunks.map((chunk) =>
+        gw2Api.get<MapResponse[]>('/maps', {
+          params: { ids: chunk.join(',') },
+          cache: {
+            key: `maps:chunk:${chunk[0]}-${chunk[chunk.length - 1]}`,
+            ttl: CACHE_TTL.MAPS,
+          },
+        })
+      )
+    )
+
+    // Step 4: Flatten all chunks
+    const mapsData = mapChunks.flat()
 
     // Transform API response to our schema
     const maps: Map[] = mapsData.map((m) => ({

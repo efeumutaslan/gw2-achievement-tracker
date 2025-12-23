@@ -17,15 +17,37 @@ export class AchievementService {
       }
     }
 
-    // Fetch from API
-    const achievementsData = await gw2Api.get<AchievementResponse[]>('/achievements', {
-      params: { ids: 'all' },
+    // Step 1: Fetch all achievement IDs
+    const achievementIds = await gw2Api.get<number[]>('/achievements', {
       cache: {
-        key: 'achievements:all',
+        key: 'achievements:ids',
         ttl: CACHE_TTL.ACHIEVEMENTS,
       },
       deduplicate: true,
     })
+
+    // Step 2: Fetch achievements in chunks (GW2 API limit is 200 IDs per request)
+    const chunkSize = 200
+    const chunks: number[][] = []
+    for (let i = 0; i < achievementIds.length; i += chunkSize) {
+      chunks.push(achievementIds.slice(i, i + chunkSize))
+    }
+
+    // Step 3: Fetch all chunks in parallel
+    const achievementChunks = await Promise.all(
+      chunks.map((chunk) =>
+        gw2Api.get<AchievementResponse[]>('/achievements', {
+          params: { ids: chunk.join(',') },
+          cache: {
+            key: `achievements:chunk:${chunk[0]}-${chunk[chunk.length - 1]}`,
+            ttl: CACHE_TTL.ACHIEVEMENTS,
+          },
+        })
+      )
+    )
+
+    // Step 4: Flatten all chunks
+    const achievementsData = achievementChunks.flat()
 
     // Transform API response to our schema
     const achievements: Achievement[] = achievementsData.map((ach) => ({

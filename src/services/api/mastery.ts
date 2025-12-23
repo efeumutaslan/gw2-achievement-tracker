@@ -17,9 +17,18 @@ export class MasteryService {
       }
     }
 
-    // Fetch from API
+    // Step 1: Fetch all mastery IDs
+    const masteryIds = await gw2Api.get<number[]>('/masteries', {
+      cache: {
+        key: 'masteries:ids',
+        ttl: CACHE_TTL.MASTERIES,
+      },
+      deduplicate: true,
+    })
+
+    // Step 2: Fetch mastery details (masteries are few, can fetch all at once)
     const masteriesData = await gw2Api.get<MasteryResponse[]>('/masteries', {
-      params: { ids: 'all' },
+      params: { ids: masteryIds.join(',') },
       cache: {
         key: 'masteries:all',
         ttl: CACHE_TTL.MASTERIES,
