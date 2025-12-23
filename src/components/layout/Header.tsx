@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom'
-import { Settings, Home, Trophy } from 'lucide-react'
+import { Settings, Home, Trophy, Star, Map } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useUserStore } from '@/stores/userStore'
 import { Badge } from '@/components/ui/badge'
@@ -12,6 +12,8 @@ export function Header() {
   const navItems = [
     { path: '/dashboard', label: 'Dashboard', icon: Home },
     { path: '/achievements', label: 'Achievements', icon: Trophy },
+    { path: '/masteries', label: 'Masteries', icon: Star },
+    { path: '/maps', label: 'Maps', icon: Map },
     { path: '/settings', label: 'Settings', icon: Settings },
   ]
 

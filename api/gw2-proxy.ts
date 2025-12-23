@@ -43,10 +43,21 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     // Build GW2 API URL
     const url = new URL(`${GW2_API_BASE}${endpoint}`)
 
-    // Add query parameters
+    // Debug logging
+    console.log('Proxy request:', { endpoint, params: otherParams })
+
+    // Add query parameters (handle both single values and arrays)
     Object.entries(otherParams).forEach(([key, value]) => {
-      if (value) {
-        url.searchParams.append(key, String(value))
+      if (value !== undefined && value !== null) {
+        // Handle array values (e.g., ids: ['1', '2', '3'])
+        if (Array.isArray(value)) {
+          value.forEach((v) => {
+            if (v) url.searchParams.append(key, String(v))
+          })
+        } else {
+          // Handle single values
+          url.searchParams.append(key, String(value))
+        }
       }
     })
 
@@ -60,14 +71,25 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       headers['Authorization'] = `Bearer ${apiKey}`
     }
 
+    // Debug: log final URL
+    console.log('Requesting GW2 API:', url.toString())
+
     // Make request to GW2 API
     const response = await fetch(url.toString(), {
       method: 'GET',
       headers,
     })
 
+    // Log response status
+    console.log('GW2 API response status:', response.status)
+
     // Get response data
     const data = await response.json()
+
+    // If GW2 API returned an error, log it
+    if (response.status >= 400) {
+      console.error('GW2 API error response:', { status: response.status, data })
+    }
 
     // Return response with same status code
     return res.status(response.status).json(data)
