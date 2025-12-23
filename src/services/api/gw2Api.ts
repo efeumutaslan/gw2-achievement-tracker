@@ -56,12 +56,17 @@ interface RequestOptions {
 }
 
 export class GW2ApiClient {
-  private readonly baseURL = 'https://api.guildwars2.com/v2'
+  private readonly baseURL: string
   private readonly axiosInstance: AxiosInstance
   private readonly rateLimiter: RateLimiter
   private readonly requestQueue: Map<string, Promise<unknown>>
+  private readonly useProxy: boolean
 
   constructor() {
+    // Use proxy in production, direct API in development
+    this.useProxy = import.meta.env.PROD || window.location.hostname.includes('vercel.app')
+    this.baseURL = this.useProxy ? '/api/gw2-proxy' : 'https://api.guildwars2.com/v2'
+
     this.axiosInstance = axios.create({
       baseURL: this.baseURL,
       timeout: 15000, // 15 second timeout
@@ -135,18 +140,33 @@ export class GW2ApiClient {
     retryCount = 0
   ): Promise<T> {
     try {
-      const config: AxiosRequestConfig = {
-        params: options?.params,
-      }
+      let config: AxiosRequestConfig
 
-      // Add authorization header if API key provided
-      if (options?.apiKey) {
-        config.headers = {
-          Authorization: `Bearer ${options.apiKey}`,
+      if (this.useProxy) {
+        // When using proxy, send everything as query params
+        config = {
+          params: {
+            endpoint,
+            ...options?.params,
+            ...(options?.apiKey && { apiKey: options.apiKey }),
+          },
+        }
+      } else {
+        // Direct API call
+        config = {
+          params: options?.params,
+        }
+
+        // Add authorization header if API key provided
+        if (options?.apiKey) {
+          config.headers = {
+            Authorization: `Bearer ${options.apiKey}`,
+          }
         }
       }
 
-      const response = await this.axiosInstance.get<T>(endpoint, config)
+      const requestEndpoint = this.useProxy ? '' : endpoint
+      const response = await this.axiosInstance.get<T>(requestEndpoint, config)
 
       // Cache the response
       if (options?.cache) {
