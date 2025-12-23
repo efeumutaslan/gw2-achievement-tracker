@@ -67,7 +67,24 @@ node --version
 
 If you need to upgrade, download the latest version from [nodejs.org](https://nodejs.org/)
 
-## Installation
+## Quick Start
+
+### 🚀 Deploy to Vercel (Recommended)
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/KULLANICI_ADINIZ/gw2-achievement-tracker)
+
+**En kolay yol:** Vercel'e deploy edin ve hemen kullanmaya başlayın!
+
+1. GitHub'da repository oluşturun
+2. Kodu GitHub'a push edin
+3. [Vercel.com](https://vercel.com)'a gidin
+4. "Add New Project" > GitHub repo'nuzu seçin
+5. Deploy butonuna tıklayın
+6. 2 dakika içinde hazır! 🎉
+
+Detaylı deployment adımları için: [DEPLOYMENT.md](DEPLOYMENT.md)
+
+### 💻 Local Development
 
 1. Install dependencies:
 ```bash
@@ -80,6 +97,8 @@ npm run dev
 ```
 
 3. Open your browser and navigate to the URL shown in the terminal (typically `http://localhost:5173`)
+
+**Not:** Local'de çalıştırmak için Node.js 20.19+ veya 22.12+ gerekli.
 
 ## How to Use
 
