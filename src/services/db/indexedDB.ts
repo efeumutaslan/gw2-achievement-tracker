@@ -109,12 +109,12 @@ export class GW2Database extends Dexie {
 
   // Helper method to get user's completed achievements
   async getUserCompletedAchievements(userId: string): Promise<UserAchievement[]> {
-    return this.userAchievements.where('[userId+done]').equals([userId, true]).toArray()
+    return this.userAchievements.where({ userId, done: true }).toArray()
   }
 
   // Helper method to get user's incomplete achievements
   async getUserIncompleteAchievements(userId: string): Promise<UserAchievement[]> {
-    return this.userAchievements.where('[userId+done]').equals([userId, false]).toArray()
+    return this.userAchievements.where({ userId, done: false }).toArray()
   }
 }
 

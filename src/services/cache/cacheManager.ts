@@ -14,7 +14,11 @@ export const CACHE_TTL = {
 } as const
 
 export class CacheManager {
-  constructor(private database: GW2Database) {}
+  private database: GW2Database
+
+  constructor(database: GW2Database) {
+    this.database = database
+  }
 
   async get<T>(key: string): Promise<T | null> {
     try {
