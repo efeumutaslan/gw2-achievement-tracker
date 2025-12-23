@@ -31,7 +31,11 @@ export function AchievementCard({ achievement, selectedUserIds }: AchievementCar
   const users = useUserStore((state) => state.users)
 
   return (
-    <Card className="m-2 hover:bg-accent/50 transition-colors">
+    <Card
+      className={`m-2 hover:bg-accent/50 transition-all ${
+        isExpanded ? 'relative z-50 shadow-2xl bg-card' : ''
+      }`}
+    >
       <CardContent className="p-4">
         {/* Main Achievement Info - Clickable */}
         <div
