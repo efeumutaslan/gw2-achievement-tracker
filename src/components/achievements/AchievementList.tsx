@@ -12,11 +12,16 @@ export function AchievementList({ achievements, selectedUserIds }: AchievementLi
   const parentRef = useRef<HTMLDivElement>(null)
 
   // Virtual scrolling for performance with 7000+ achievements
+  // Using dynamic sizing to handle expanded cards
   const virtualizer = useVirtualizer({
     count: achievements.length,
     getScrollElement: () => parentRef.current,
-    estimateSize: () => 150, // Estimated height of each achievement card
-    overscan: 5, // Render 5 extra items above/below viewport
+    estimateSize: () => 150, // Initial estimate
+    overscan: 5,
+    measureElement:
+      typeof window !== 'undefined' && navigator.userAgent.indexOf('Firefox') === -1
+        ? (element) => element?.getBoundingClientRect().height
+        : undefined,
   })
 
   if (achievements.length === 0) {
@@ -27,7 +32,6 @@ export function AchievementList({ achievements, selectedUserIds }: AchievementLi
     <div
       ref={parentRef}
       className="h-[600px] overflow-auto rounded-lg border bg-card"
-      style={{ contain: 'strict' }}
     >
       <div
         style={{
@@ -41,12 +45,13 @@ export function AchievementList({ achievements, selectedUserIds }: AchievementLi
           return (
             <div
               key={achievement.id}
+              data-index={virtualItem.index}
+              ref={virtualizer.measureElement}
               style={{
                 position: 'absolute',
                 top: 0,
                 left: 0,
                 width: '100%',
-                height: `${virtualItem.size}px`,
                 transform: `translateY(${virtualItem.start}px)`,
               }}
             >
