@@ -102,6 +102,12 @@ export interface AccountMasteryPointsResponse {
   unlocked: number[]
 }
 
+// Account Masteries Response (with level info)
+export interface AccountMasteriesResponse {
+  id: number
+  level: number // 0-indexed, represents highest unlocked level
+}
+
 // Map Response
 export interface MapResponse {
   id: number

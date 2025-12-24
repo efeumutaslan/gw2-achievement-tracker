@@ -3,7 +3,7 @@
 import { gw2Api } from './gw2Api'
 import { db } from '../db/indexedDB'
 import { CACHE_TTL } from '../cache/cacheManager'
-import type { MasteryResponse, AccountMasteryPointsResponse } from '@/types/gw2'
+import type { MasteryResponse, AccountMasteriesResponse } from '@/types/gw2'
 import type { Mastery, UserMastery } from '@/services/db/schema'
 
 export class MasteryService {
@@ -78,8 +78,8 @@ export class MasteryService {
       }
     }
 
-    // Fetch from API
-    const masteryData = await gw2Api.get<AccountMasteryPointsResponse>('/account/mastery/points', {
+    // Fetch from API - use /account/masteries for level info
+    const masteryData = await gw2Api.get<AccountMasteriesResponse[]>('/account/masteries', {
       apiKey,
       cache: {
         key: `masteries:user:${userId}`,
@@ -88,11 +88,13 @@ export class MasteryService {
     })
 
     // Transform to UserMastery format
-    const userMasteries: UserMastery[] = masteryData.unlocked.map((masteryId) => ({
-      id: `${userId}-${masteryId}`,
+    // Note: GW2 API level is 0-indexed (0 = first level unlocked)
+    // We add 1 to make it 1-indexed for easier display
+    const userMasteries: UserMastery[] = masteryData.map((mastery) => ({
+      id: `${userId}-${mastery.id}`,
       userId,
-      masteryId,
-      level: 1, // GW2 API doesn't provide level info, just unlocked status
+      masteryId: mastery.id,
+      level: mastery.level + 1, // Convert from 0-indexed to 1-indexed
       lastUpdated: Date.now(),
     }))
 
