@@ -87,6 +87,15 @@ export class MasteryService {
       },
     })
 
+    // Debug: Log the response
+    console.log('Mastery API response for user', userId, ':', masteryData)
+
+    // Validate response is an array
+    if (!Array.isArray(masteryData)) {
+      console.error('Invalid mastery data response:', masteryData)
+      throw new Error('Invalid mastery data: expected array, got ' + typeof masteryData)
+    }
+
     // Transform to UserMastery format
     // Note: GW2 API level is 0-indexed (0 = first level unlocked)
     // We add 1 to make it 1-indexed for easier display

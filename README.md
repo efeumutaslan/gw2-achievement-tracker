@@ -43,16 +43,8 @@ Multi-user Guild Wars 2 achievement tracking application that allows you to trac
   - User unlock status visualization
   - Region-based filtering
 
-- **Maps & Waypoints** (Phase 6)
-  - Browse 1000+ maps across Tyria
-  - Filter by type (Public, Instance, Tutorial, etc.)
-  - Filter by continent (Tyria, Mists)
-  - Search through waypoints
-  - Waypoint coordinates display
-  - Virtual scrolling for performance
-
-- **Dashboard** (Phase 7)
-  - Overview cards (total users, achievements, masteries, maps)
+- **Dashboard & UI** (Phase 6-7)
+  - Overview cards (total users, achievements, masteries)
   - Per-user statistics:
     * Achievement completion count and percentage
     * Total Achievement Points (AP) calculation
@@ -60,6 +52,8 @@ Multi-user Guild Wars 2 achievement tracking application that allows you to trac
     * Color-coded progress bars
   - Automatic data loading
   - Responsive grid layout
+  - Dark mode support
+  - Dialog-based achievement details
 
 ## Tech Stack
 
@@ -158,12 +152,6 @@ npm run dev
 3. View level-by-level mastery progress
 4. See which users have unlocked each mastery
 
-**Maps & Waypoints**:
-1. Navigate to **Maps** page
-2. Browse maps or search waypoints
-3. Filter by map type or continent
-4. Find specific waypoints with coordinates
-
 ## Project Structure
 
 ```
@@ -243,7 +231,7 @@ This application implements:
 
 ## Development Phases
 
-All 7 phases completed! 🎉
+All 6 phases completed! 🎉
 
 ### ✅ Phase 1: Project Setup & Infrastructure
 - ✅ Vite + React + TypeScript project
@@ -280,18 +268,13 @@ All 7 phases completed! 🎉
 - ✅ Mastery tree visualization
 - ✅ User progress indicators
 
-### ✅ Phase 6: Map Completion & Waypoints
-- ✅ Map API service
-- ✅ Map Zustand store
-- ✅ Maps page with filters
-- ✅ Waypoint search component
-- ✅ Virtual scrolling for maps
-
-### ✅ Phase 7: Dashboard & Polish
+### ✅ Phase 6: Dashboard & Polish
 - ✅ Dashboard with statistics
 - ✅ Per-user progress cards
 - ✅ Achievement Points calculation
 - ✅ Progress bars and visualizations
+- ✅ Dark mode support
+- ✅ Dialog-based achievement details
 - ✅ Final UI polish
 
 ## Troubleshooting

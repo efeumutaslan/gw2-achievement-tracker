@@ -2,9 +2,8 @@ import { useEffect } from 'react'
 import { useUserStore } from '@/stores/userStore'
 import { useAchievementStore } from '@/stores/achievementStore'
 import { useMasteryStore } from '@/stores/masteryStore'
-import { useMapStore } from '@/stores/mapStore'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Users, Trophy, Map, Star, Award } from 'lucide-react'
+import { Users, Trophy, Star, Award } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 
 // User colors for progress indicators
@@ -33,15 +32,11 @@ export function Dashboard() {
   const userMasteries = useMasteryStore((state) => state.userMasteries)
   const loadMasteries = useMasteryStore((state) => state.loadMasteries)
 
-  const maps = useMapStore((state) => state.maps)
-  const loadMaps = useMapStore((state) => state.loadMaps)
-
   // Load data on mount
   useEffect(() => {
     if (achievements.length === 0) loadAchievements()
     if (masteries.length === 0) loadMasteries()
-    if (maps.length === 0) loadMaps()
-  }, [achievements.length, masteries.length, maps.length, loadAchievements, loadMasteries, loadMaps])
+  }, [achievements.length, masteries.length, loadAchievements, loadMasteries])
 
   // Calculate user statistics
   const userStats = selectedUserIds.map((userId) => {
@@ -82,7 +77,7 @@ export function Dashboard() {
       </div>
 
       {/* Overview Cards */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 md:grid-cols-3">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Users</CardTitle>
@@ -118,19 +113,6 @@ export function Dashboard() {
             <div className="text-2xl font-bold">{masteries.length}</div>
             <p className="text-xs text-muted-foreground">
               Across 5 regions
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Maps</CardTitle>
-            <Map className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{maps.length.toLocaleString()}</div>
-            <p className="text-xs text-muted-foreground">
-              Across Tyria
             </p>
           </CardContent>
         </Card>
