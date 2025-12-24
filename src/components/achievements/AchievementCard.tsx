@@ -3,7 +3,8 @@ import { useAchievementStore } from '@/stores/achievementStore'
 import { useUserStore } from '@/stores/userStore'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { CheckCircle2, Circle, Clock, ChevronDown, ChevronUp } from 'lucide-react'
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { CheckCircle2, Circle, Clock, ChevronRight } from 'lucide-react'
 import type { Achievement } from '@/services/db/schema'
 
 interface AchievementCardProps {
@@ -26,31 +27,21 @@ const USER_COLORS = [
 ]
 
 export function AchievementCard({ achievement, selectedUserIds }: AchievementCardProps) {
-  const [isExpanded, setIsExpanded] = useState(false)
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
   const getUserProgress = useAchievementStore((state) => state.getUserProgress)
   const users = useUserStore((state) => state.users)
 
   return (
-    <Card
-      className={`m-2 hover:bg-accent/50 transition-all ${
-        isExpanded ? 'relative z-50 shadow-2xl bg-card' : ''
-      }`}
-    >
-      <CardContent className="p-4">
-        {/* Main Achievement Info - Clickable */}
-        <div
-          className="flex items-start justify-between gap-4 cursor-pointer"
-          onClick={() => setIsExpanded(!isExpanded)}
-        >
+    <>
+      <Card className="m-2 hover:bg-accent/50 transition-colors cursor-pointer" onClick={() => setIsDialogOpen(true)}>
+        <CardContent className="p-4">
+          {/* Main Achievement Info - Clickable */}
+          <div className="flex items-start justify-between gap-4">
           {/* Achievement Info */}
           <div className="flex-1 min-w-0">
             <div className="flex items-start gap-2">
               <h3 className="font-semibold text-lg truncate flex-1">{achievement.name}</h3>
-              {isExpanded ? (
-                <ChevronUp className="h-5 w-5 text-muted-foreground flex-shrink-0" />
-              ) : (
-                <ChevronDown className="h-5 w-5 text-muted-foreground flex-shrink-0" />
-              )}
+              <ChevronRight className="h-5 w-5 text-muted-foreground flex-shrink-0" />
             </div>
             <p className="text-sm text-muted-foreground line-clamp-2 mt-1">
               {achievement.description}
@@ -136,10 +127,38 @@ export function AchievementCard({ achievement, selectedUserIds }: AchievementCar
             })}
           </div>
         </div>
+        </CardContent>
+      </Card>
 
-        {/* Expanded Details */}
-        {isExpanded && (
-          <div className="mt-4 pt-4 border-t space-y-3">
+      {/* Achievement Details Dialog */}
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{achievement.name}</DialogTitle>
+          </DialogHeader>
+
+          <div className="space-y-4">
+            {/* Description */}
+            <div>
+              <p className="text-sm text-muted-foreground">{achievement.description}</p>
+              {achievement.requirement && (
+                <p className="text-sm text-muted-foreground mt-2">
+                  <span className="font-medium">Requirement:</span> {achievement.requirement}
+                </p>
+              )}
+            </div>
+
+            {/* Achievement Type */}
+            {achievement.type && (
+              <div>
+                <Badge variant="secondary" className="text-xs">
+                  {achievement.type}
+                </Badge>
+              </div>
+            )}
+
+            {/* Details Content */}
+            <div className="space-y-3">
             {/* Tier Details */}
             {achievement.tiers && achievement.tiers.length > 0 && (
               <div className="space-y-2">
@@ -224,8 +243,9 @@ export function AchievementCard({ achievement, selectedUserIds }: AchievementCar
               </div>
             )}
           </div>
-        )}
-      </CardContent>
-    </Card>
+        </div>
+      </DialogContent>
+    </Dialog>
+  </>
   )
 }

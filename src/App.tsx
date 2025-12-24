@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { useEffect } from 'react'
+import { ThemeProvider } from './components/theme-provider'
 import { Layout } from './components/layout/Layout'
 import { Dashboard } from './pages/Dashboard'
 import { Achievements } from './pages/Achievements'
@@ -17,18 +18,20 @@ function App() {
   }, [loadUsers])
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Navigate to="/dashboard" replace />} />
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="achievements" element={<Achievements />} />
-          <Route path="masteries" element={<Masteries />} />
-          <Route path="maps" element={<Maps />} />
-          <Route path="settings" element={<Settings />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <ThemeProvider defaultTheme="dark" storageKey="gw2-tracker-theme">
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Navigate to="/dashboard" replace />} />
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="achievements" element={<Achievements />} />
+            <Route path="masteries" element={<Masteries />} />
+            <Route path="maps" element={<Maps />} />
+            <Route path="settings" element={<Settings />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </ThemeProvider>
   )
 }
 

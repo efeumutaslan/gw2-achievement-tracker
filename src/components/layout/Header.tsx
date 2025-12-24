@@ -3,6 +3,7 @@ import { Settings, Home, Trophy, Star, Map } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useUserStore } from '@/stores/userStore'
 import { Badge } from '@/components/ui/badge'
+import { ThemeToggle } from '@/components/ui/theme-toggle'
 
 export function Header() {
   const location = useLocation()
@@ -58,6 +59,7 @@ export function Header() {
               <Badge variant="secondary">{users.length} total</Badge>
             </div>
           )}
+          <ThemeToggle />
         </div>
       </div>
     </header>
