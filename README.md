@@ -4,47 +4,62 @@ Multi-user Guild Wars 2 achievement tracking application that allows you to trac
 
 ## Features
 
-### ✅ Implemented (Phase 1-3)
+### ✅ Implemented (All Phases Complete!)
 
-- **Multi-User API Key Management**
+- **Multi-User API Key Management** (Phase 1-2)
   - Add up to 10 GW2 API keys
   - Custom names for each user
   - Secure local storage in IndexedDB
   - API key validation
   - User management (add, remove)
 
-- **Core Infrastructure**
+- **Core Infrastructure** (Phase 1-3)
   - GW2 API client with rate limiting (600 req/min)
   - Automatic retry with exponential backoff
   - Request deduplication
   - IndexedDB storage for offline support
   - Cache management with TTL
   - TypeScript for type safety
+  - Vercel serverless proxy for CORS
 
-- **Achievement API Integration**
-  - Fetch all achievements from GW2 API
-  - User achievement progress tracking
-  - Multi-user sync functionality
-  - Comparison logic for finding common incomplete achievements
-
-### 🚧 In Progress (Phase 4)
-
-- **Achievement Tracking UI**
-  - Virtual scrolling for 7000+ achievements
-  - Search and filtering
-  - Multi-user progress comparison
+- **Achievement Tracking** (Phase 3-4)
+  - 7000+ achievements from GW2 API
+  - Virtual scrolling for performance
+  - Expandable cards with detailed tier progress
+  - Search with 300ms debounce
   - Status filters (completed, in-progress, not started)
   - Common incomplete achievements finder
+  - Multi-user progress comparison
+  - Dynamic sizing for expanded cards
 
-### 📋 Planned (Phase 5-7)
+- **Mastery Tracking** (Phase 5)
+  - Track masteries across 5 regions
+    * Central Tyria
+    * Heart of Maguuma
+    * Crystal Desert
+    * Icebrood Saga
+    * Cantha
+  - Detailed level-by-level progress
+  - User unlock status visualization
+  - Region-based filtering
 
-- Mastery tracking and visualization
-- Map completion tracking
-- Waypoint search with unlock status
-- Dashboard with statistics
-- Dark mode
-- Export/import functionality
-- Performance optimizations
+- **Maps & Waypoints** (Phase 6)
+  - Browse 1000+ maps across Tyria
+  - Filter by type (Public, Instance, Tutorial, etc.)
+  - Filter by continent (Tyria, Mists)
+  - Search through waypoints
+  - Waypoint coordinates display
+  - Virtual scrolling for performance
+
+- **Dashboard** (Phase 7)
+  - Overview cards (total users, achievements, masteries, maps)
+  - Per-user statistics:
+    * Achievement completion count and percentage
+    * Total Achievement Points (AP) calculation
+    * Masteries unlocked count
+    * Color-coded progress bars
+  - Automatic data loading
+  - Responsive grid layout
 
 ## Tech Stack
 
@@ -122,13 +137,32 @@ npm run dev
 4. Click "Add User"
 5. Repeat for up to 10 users
 
-### Step 3: Track Achievements
+### Step 3: Track Your Progress
 
-1. Navigate to **Achievements** page (coming soon)
-2. View all achievements with progress per user
-3. Use filters to find specific achievements
-4. Toggle "Show common incomplete" to find achievements none of your users have completed
-5. Click on any achievement for detailed progress
+**Dashboard**:
+1. Navigate to **Dashboard** to see overall statistics
+2. View completion percentages and Achievement Points per user
+3. See total achievements, masteries, and maps available
+
+**Achievements**:
+1. Navigate to **Achievements** page
+2. Browse all 7000+ achievements with virtual scrolling
+3. Use search to find specific achievements
+4. Filter by status (completed, in-progress, not-started)
+5. Toggle "Show common incomplete" to find achievements none of your users have completed
+6. Click any achievement to expand and see detailed tier-by-tier progress
+
+**Masteries**:
+1. Navigate to **Masteries** page
+2. Switch between region tabs (Tyria, Maguuma, Desert, Tundra, Jade)
+3. View level-by-level mastery progress
+4. See which users have unlocked each mastery
+
+**Maps & Waypoints**:
+1. Navigate to **Maps** page
+2. Browse maps or search waypoints
+3. Filter by map type or continent
+4. Find specific waypoints with coordinates
 
 ## Project Structure
 
@@ -209,6 +243,8 @@ This application implements:
 
 ## Development Phases
 
+All 7 phases completed! 🎉
+
 ### ✅ Phase 1: Project Setup & Infrastructure
 - ✅ Vite + React + TypeScript project
 - ✅ Dependencies installed
@@ -227,17 +263,36 @@ This application implements:
 - ✅ Achievement service
 - ✅ Account service
 - ✅ Multi-user sync
+- ✅ Vercel serverless proxy for CORS
 
-### 🚧 Phase 4: Achievement Tracking Core (In Progress)
+### ✅ Phase 4: Achievement Tracking Core
 - ✅ Achievement Zustand store
-- 🚧 Achievements page UI
-- 🚧 Filtering and search
-- 🚧 Virtual scrolling
-- 🚧 Multi-user comparison
+- ✅ Achievements page UI
+- ✅ Filtering and search
+- ✅ Virtual scrolling with dynamic sizing
+- ✅ Multi-user comparison
+- ✅ Expandable cards with tier details
 
-### 📋 Phase 5: Mastery Tracking (Planned)
-### 📋 Phase 6: Map Completion & Waypoints (Planned)
-### 📋 Phase 7: Polish & Optimization (Planned)
+### ✅ Phase 5: Mastery Tracking
+- ✅ Mastery API service
+- ✅ Mastery Zustand store
+- ✅ Masteries page with region tabs
+- ✅ Mastery tree visualization
+- ✅ User progress indicators
+
+### ✅ Phase 6: Map Completion & Waypoints
+- ✅ Map API service
+- ✅ Map Zustand store
+- ✅ Maps page with filters
+- ✅ Waypoint search component
+- ✅ Virtual scrolling for maps
+
+### ✅ Phase 7: Dashboard & Polish
+- ✅ Dashboard with statistics
+- ✅ Per-user progress cards
+- ✅ Achievement Points calculation
+- ✅ Progress bars and visualizations
+- ✅ Final UI polish
 
 ## Troubleshooting
 
